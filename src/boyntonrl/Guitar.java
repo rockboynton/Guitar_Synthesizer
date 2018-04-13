@@ -10,10 +10,9 @@ package boyntonrl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.LineUnavailableException;
 
@@ -52,7 +51,7 @@ public class Guitar {
     /**
      * Queue of notes 
      */
-    private Queue<Note> notes;
+    private Queue<Note> notes = new ArrayDeque<>();
     
     /**
      *  Sample rate in samples per second 
@@ -71,7 +70,6 @@ public class Guitar {
     public Guitar() {
         this.sampleRate = DEFAULT_SAMPLE_RATE;
         this.decayRate = DEFAULT_DECAY_RATE;
-        this.notes = new ArrayDeque<>();
     }
     
     /**
@@ -96,7 +94,6 @@ public class Guitar {
             System.err.println("Invalid decay rate specified...using default sample rate");
             this.decayRate = DEFAULT_DECAY_RATE;
         }
-         this.notes = new ArrayDeque<>();
     }
         
     /**
@@ -129,9 +126,31 @@ public class Guitar {
      * @return List of samples comprising the pluck sound(s).
      */
     private List<Float> jaffeSmith() {
-        List<Float> samples = new LinkedList<>();
-        for (Note note : notes) {
+        List<Float> samples = new ArrayList<>();
+        int samplesPerPeriod;
+        int numberOfSamples;
+        Queue<Float> periodSamples;
 
+        for (Note note : notes) {
+            samplesPerPeriod = (int) (sampleRate / note.getFrequency());
+            numberOfSamples = (int) (sampleRate * note
+                    .getDuration() / 1000.0);
+            periodSamples = new ArrayDeque<>(samplesPerPeriod);
+            // since nextFloat() returns a number between 0 and 1, multiplying by 2 and
+            // subtracting 1 will give a value between -1 and 1
+            for (int i = 0; i < samplesPerPeriod; i++) {
+                periodSamples.add((ThreadLocalRandom.current().nextFloat() * 2) - 1);
+            }
+            float previousSample = 0.0f;
+            float currentSample;
+            float newSample;
+            for (int i = 0; i < numberOfSamples; i++) {
+                currentSample = periodSamples.poll();
+                newSample = decayRate * ((previousSample + currentSample) / 2);
+                periodSamples.add(newSample);
+                samples.add(newSample);
+                previousSample = currentSample;
+            }
         }
         return samples;
     }

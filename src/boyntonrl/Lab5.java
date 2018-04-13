@@ -34,8 +34,8 @@ public class Lab5 {
     public static void main(String[] args) {
         Scanner stdIn = new Scanner(System.in);
         System.out.print("Enter the name of the file you'd like to play: ");
-        String fileName = stdIn.next();
-        Path path = Paths.get("user.dir", fileName);
+        String fileName = stdIn.nextLine();
+        Path path = Paths.get(fileName);
         File audioFile = new File(path.toString());
         try (Scanner parser = new Scanner(audioFile)) {
             Guitar guitar = new Guitar();
