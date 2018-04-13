@@ -4,7 +4,7 @@
     <option name="configuration">
       <map>
         <entry key="active-configuration" value="LOCAL_FILE:C:/Users/goali/Downloads/CS2852_checkStyle-v2.xml:MSOE CS2852" />
-        <entry key="checkstyle-version" value="8.8" />
+        <entry key="checkstyle-version" value="8.7" />
         <entry key="copy-libs" value="true" />
         <entry key="location-0" value="BUNDLED:(bundled):Sun Checks" />
         <entry key="location-1" value="BUNDLED:(bundled):Google Checks" />

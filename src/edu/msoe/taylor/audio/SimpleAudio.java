@@ -26,7 +26,7 @@ import java.util.List;
  *  library.  The class provides functionality for creating and playing
  *  sounds and saving the sounds as .wav files.
  * @author t a y l o r@msoe.edu
- * @author b o y n t o n@msoe.edu
+ * @author b o y n t o n r l@msoe.edu
  * @version 2018.04.11.10
  */
 public class SimpleAudio {

@@ -6,16 +6,19 @@
  * Created: 4/11/18
  */
 
-package lab5;
+package boyntonrl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
 
 import javax.sound.sampled.LineUnavailableException;
 
 import edu.msoe.taylor.audio.Note;
+import edu.msoe.taylor.audio.SimpleAudio;
 
 /**
  * The Guitar class generates guitar sounds based on user input.
@@ -27,7 +30,8 @@ import edu.msoe.taylor.audio.Note;
  * an internal method (jaffeSmith())) and then send them to the
  * audio output stream.
  * @author t a y l o r@msoe.edu
- * @version 2018.03.26_2.3
+ * @author b o y n t o n r l@msoe.edu
+ * @version 2018.04.12
  */
 public class Guitar {
     /** 
@@ -65,7 +69,9 @@ public class Guitar {
      * and decay rate.
      */
     public Guitar() {
-        // TODO
+        this.sampleRate = DEFAULT_SAMPLE_RATE;
+        this.decayRate = DEFAULT_DECAY_RATE;
+        this.notes = new ArrayDeque<>();
     }
     
     /**
@@ -77,7 +83,20 @@ public class Guitar {
      * @param decayRate decay rate (between 0.0f and 1.0f)
      */
     public Guitar(int sampleRate, float decayRate) {
-        // TODO
+        if (DEFAULT_SAMPLE_RATE <= sampleRate && sampleRate <= MAX_SAMPLE_RATE) {
+            this.sampleRate = sampleRate;
+        } else {
+            System.err.println("Invalid sample rate specified...using default sample rate");
+            this.sampleRate = DEFAULT_SAMPLE_RATE;
+        }
+
+        if (0.0f <= decayRate && decayRate <= 1.0f) {
+            this.decayRate = decayRate;
+        } else {
+            System.err.println("Invalid decay rate specified...using default sample rate");
+            this.decayRate = DEFAULT_DECAY_RATE;
+        }
+         this.notes = new ArrayDeque<>();
     }
         
     /**
@@ -85,7 +104,7 @@ public class Guitar {
      * @param note Note to be added.
      */
     public void addNote(Note note) {
-        // TODO
+        notes.add(note);
     }
     
     /**
@@ -96,7 +115,8 @@ public class Guitar {
      * @throws IOException If any other input/output problem is encountered.
      */
     public void play() throws LineUnavailableException, IOException {
-        // TODO
+        SimpleAudio simpleAudio = new SimpleAudio();
+        simpleAudio.play(jaffeSmith());
     }
 
     /**
@@ -109,8 +129,11 @@ public class Guitar {
      * @return List of samples comprising the pluck sound(s).
      */
     private List<Float> jaffeSmith() {
-        // TODO
-        return null;
+        List<Float> samples = new LinkedList<>();
+        for (Note note : notes) {
+
+        }
+        return samples;
     }
 
     /**
