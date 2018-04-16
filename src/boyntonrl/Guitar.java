@@ -10,9 +10,11 @@ package boyntonrl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.LineUnavailableException;
 
@@ -133,6 +135,7 @@ public class Guitar {
 
         for (Note note : notes) {
             samplesPerPeriod = (int) (sampleRate / note.getFrequency());
+            // divide by 1000 to convert to seconds
             numberOfSamples = (int) (sampleRate * note
                     .getDuration() / 1000.0);
             periodSamples = new ArrayDeque<>(samplesPerPeriod);

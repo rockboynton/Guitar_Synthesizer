@@ -38,7 +38,33 @@ public class Lab5 {
         Path path = Paths.get(fileName);
         File audioFile = new File(path.toString());
         try (Scanner parser = new Scanner(audioFile)) {
-            Guitar guitar = new Guitar();
+            Guitar guitar;
+            System.out.print("Would you like to use the (d)efault sample rate and decay rate or " +
+                    "use a (c)ustom configuration?: ");
+            while (!stdIn.hasNext("[dDcC]")) {
+                System.out.println("Please enter a valid input (d) or (c): ");
+                stdIn.next();
+            }
+
+            if (stdIn.nextLine().equalsIgnoreCase("c")) {
+                int sampleRate;
+                float decayRate;
+                System.out.print("Enter your desired sample rate in Hz (an integer number " +
+                        "between 8000 and 48000): ");
+                while (!stdIn.hasNextInt()) {
+                    System.out.println("Please enter a valid integer number: ");
+                    stdIn.next();
+                }
+                sampleRate = stdIn.nextInt();
+                System.out.print("Enter your desired decay rate (a value between 0.0 and 1.0): ");
+                while (!stdIn.hasNextFloat()) {
+                    System.out.println("Please enter a valid number: ");
+                }
+                decayRate = stdIn.nextFloat();
+                guitar = new Guitar(sampleRate, decayRate);
+            } else {
+                guitar = new Guitar();
+            }
             String line;
             int lineNumber = 0;
             while (parser.hasNextLine()) {
@@ -51,13 +77,14 @@ public class Lab5 {
                 }
                 lineNumber++;
             }
+            System.out.println("Now playing...");
             guitar.play();
+            System.out.println("I hope you enjoyed!");
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } catch (LineUnavailableException lue) {
             System.err.println("Line unavailable");
         }
-
     }
     
     /**
