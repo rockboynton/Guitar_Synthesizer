@@ -114,7 +114,7 @@ public class Guitar {
      * @throws IOException If any other input/output problem is encountered.
      */
     public void play() throws LineUnavailableException, IOException {
-        SimpleAudio simpleAudio = new SimpleAudio();
+        SimpleAudio simpleAudio = new SimpleAudio(sampleRate);
         simpleAudio.play(jaffeSmith());
     }
 
